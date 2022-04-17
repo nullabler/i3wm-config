@@ -1,5 +1,9 @@
-set $mod Mod1
-set $term terminator
+# config for i3 by Anushasan Poudel
+# www.github.com/beinganushasan
+# www.anushasanpoudel.com.np
+
+set $mod Mod4
+set $term alacritty
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
@@ -8,7 +12,8 @@ set $term terminator
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
 #font pango:DejaVu Sans Mono 10
-font pango:SanFranciscoDisplay Nerd Font:style=Regular:size=8
+#font pango:SanFranciscoDisplay Nerd Font:style=Regular:size=8
+font pango:Siji:style=Regular:size=9
 
 
 
@@ -19,13 +24,13 @@ font pango:SanFranciscoDisplay Nerd Font:style=Regular:size=8
 #	i3bar_command i3bar
 #	position top
 #	mode dock
-#       status_command i3status 
+#       status_command i3status
 
 # colors {
     #    background #353439
 #       statusline #7B9F35
 #        separator #9FEE00
- 
+
     #    focused_workspace  #353439 #4B4D46 #9FEE00
     #    active_workspace   #353439 #4B4D46 #7B9F35
     #    inactive_workspace #353439 #4B4D46 #7B9F35
@@ -34,9 +39,28 @@ font pango:SanFranciscoDisplay Nerd Font:style=Regular:size=8
 #
 #}
 
-#Colors
-client.focused #555555 #555555 #ffffff #2e9ef4     #CC0000
+bar {
+    font pango:DejaVu Sans Mono, FontAwesome 9
+    position top
+    status_command i3status-rs ~/.config/i3/i3status-rs.toml
+    colors {
+        separator #666666
+        background #222222
+        statusline #dddddd
+        focused_workspace #0088CC #0088CC #ffffff
+        active_workspace #333333 #333333 #ffffff
+        inactive_workspace #333333 #333333 #888888
+        urgent_workspace #2f343a #900000 #ffffff
+    }
+}
 
+#Colors
+client.focused #555555 #555555 #ffffff #00004d #800000
+
+#exec "setxkbmap -layout us,ru"
+#exec "setxkbmap -option 'grp:alt_shift_toggle'"
+#exec "setxkbmap -option 'grp:alt_shift_toggle' -layout us,ru -variant ,qwerty"
+exec --no-startup-id setxkbmap -model pc105 -layout us,ru -option grp:alt_shift_toggle
 # xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
 # screen before suspend. Use loginctl lock-session to lock your screen.
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork -e -i /home/nix/.config/i3/lock.png &
@@ -55,9 +79,9 @@ exec --no-startup-id numlockx on  #keep numlock on
 
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-independent system tray GUI for it.
-exec --no-startup-id nm-applet
+#exec --no-startup-id nm-applet
 #exec --no-startup-id xfce4-power-manager
-exec --no-startup-id polybar -r  default
+#exec --no-startup-id polybar -r  default
 
 
 # Configure border style <normal|1pixel|pixel xx|none|pixel>
@@ -82,7 +106,7 @@ hide_edge_borders none
 
 
 # Screen brightness controls
-bindsym XF86MonBrightnessUp exec "xbacklight -inc 10" 
+bindsym XF86MonBrightnessUp exec "xbacklight -inc 10"
 bindsym XF86MonBrightnessDown exec "xbacklight -dec 5"
 
 
@@ -91,23 +115,17 @@ floating_modifier $mod
 
 
 # #---Gaps---# #
-set $inner_gaps 3 
-set $outer_gaps 2 
+set $inner_gaps 3
+set $outer_gaps 2
 for_window [class="^.*"] border pixel 2
 gaps inner $inner_gaps
 gaps outer $outer_gaps
 
-
-
-
-
-
 # start a terminal
-bindsym $mod+Return exec $term 
+bindsym $mod+Return exec $term
 
 #Screenshot
-bindsym $mod+Print --release exec --no-startup-id i3-scrot 
-
+bindsym $mod+Print --release exec --no-startup-id i3-scrot
 
 #Launch App
 # start dmenu (a program launcher)
@@ -115,31 +133,45 @@ bindsym $mod+d exec dmenu_run
 bindsym $mod+a exec alacritty
 bindsym $mod+o exec thunar	 #$term -e  ranger
 
-# Run applications
+# Run development 
+bindsym  $mod+Shift+x mode "$mode_development"
+set $mode_development (p)hpstorm, mysql-(w)orkbench, (i)nsomnia, post(m)an, (s)ublime
+mode "$mode_development" {
+    bindsym p exec --no-startup-id /home/nix/App/PhpStorm-213.7172.28/bin/phpstorm.sh, mode "default"
+    bindsym w exec mysql-workbench, mode "default"
+    bindsym i exec rest.insomnia.Insomnia, mode "default"
+    bindsym m exec postman, mode "default"
+    bindsym s exec subl mode "default"
+
+    # exit system mode: "Enter" or "Escape"
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+# Run applications 
 bindsym  $mod+x mode "$mode_application"
-set $mode_application (f)irefox, (c)hrome, (s)kype, s(l)ack, (d)iscord, (p)hpstorm, (m)ysql-workbench, (i)nsomnia, sublime(t)ext
+set $mode_application (f)irefox, (c)hrome, (s)kype, s(l)ack, (d)iscord, (t)elegram
 mode "$mode_application" {
     bindsym f exec firefox, mode "default"
     bindsym c exec google-chrome-stable, mode "default"
-    bindsym s exec com.skype.Client, mode "default"
-    bindsym l exec com.slack.Slack, mode "default"
-    bindsym d exec --no-startup-id /home/nix/Applications/Discord/Discord, mode "default"
-    bindsym p exec --no-startup-id /home/nix/Applications/PhpStorm-212.5080.71/bin/phpstorm.sh, mode "default"
-    bindsym m exec mysql-workbenh, mode "default"
-    bindsym i exec rest.insomnia.Insomnia, mode "default"
-    bindsym t exec com.sublimetext.three, mode "default"
-    
+    bindsym s exec skypeforlinux, mode "default"
+    bindsym l exec slack, mode "default"
+    bindsym d exec --no-startup-id /home/nix/App/Discord/Discord, mode "default"
+    bindsym t exec telegram-desktop, mode "default"
+
     # exit system mode: "Enter" or "Escape"
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
 
 # binding particular apps in certain workspace
-assign [class="Terminator"] $ws1
+assign [class="PhpStorm"] $ws1
 assign [class="Google-chrome"] $ws2
+assign [class="Postman"] $ws2
+assign [class="Insomnia"] $ws2
 assign [class="Slack"] $ws3
 assign [class="Skype"] $ws3
-assign [class="discord"] $ws3
+assign [class="discord"] $ws4
 assign [class="Thunar"] $ws4
 
 # kill focused window
@@ -173,7 +205,7 @@ bindsym $mod+Shift+Right move right
 # split orientation
 #bindsym $mod+h split h; exec notify-send 'tile horizontally'
 #bindsym $mod+v split v; exec notify-send 'tile vertically'
-bindsym $mod+t split toggle 
+bindsym $mod+t split toggle
 
 
 # enter fullscreen mode for the focused container
