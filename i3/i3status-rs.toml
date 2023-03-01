@@ -1,50 +1,62 @@
+[theme]
 theme = "nord-dark"
-icons = "awesome"
+[icons]
+icons = "awesome6"
 
 [[block]]
 block = "disk_space"
 path = "/"
-alias = "/"
 info_type = "available"
-unit = "GB"
+alert_unit = "GB"
 interval = 20
 warning = 20.0
 alert = 10.0
-on_click = "alacritty -e ranger"
+[[block.click]]
+button = "left"
+cmd = "alacritty -e ranger"
 
 [[block]]
 block = "memory"
-display_type = "memory"
-format_mem = "{mem_used_percents}"
-format_swap = "{swap_used_percents}"
 
 [[block]]
 block = "cpu"
 interval = 1
-on_click = "alacritty -e htop"
+icons_format = "{icon}"
+format = " $icon $utilization "
+[block.theme_overrides]
+idle_bg = "#123456"
+idle_fg = "#abcdef"
+[[block.click]]
+button = "left"
+cmd = "alacritty -e htop"
 
 [[block]]
 block = "sound"
-on_click = "alacritty -e alsamixer"
 [block.theme_overrides]
 idle_bg = "#4c492a"
 idle_fg = "#abcdef"
+[[block.click]]
+button = "left"
+cmd = "alacritty -e alsamixer"
 
 [[block]]
 block = "net"
-device = "enp3s0"
-format = "{ip} {speed_down;M*b}"
-interval = 5
-on_click = "alacritty -e ping 8.8.8.8"
+format = " $ip  $speed_down "
 [block.theme_overrides]
 idle_bg = "#165042"
 idle_fg = "#abcdef"
+[[block.click]]
+button = "left"
+cmd = "alacritty -e ping 8.8.8.8"
 
 [[block]]
 block = "time"
 interval = 60
-format = "%a %d/%m %R"
-on_click = "alacritty -e ~/.config/i3status-rust/click_time.sh &"
+[block.format]
+full = " $timestamp.datetime(f:'%R', l:fr_BE) "
 [block.theme_overrides]
-idle_bg = "#123456"
+idle_bg = "#330085"
 idle_fg = "#abcdef"
+[[block.click]]
+button = "left"
+cmd = "alacritty -e ~/.config/i3status-rust/click_time.sh &"
