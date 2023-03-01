@@ -17,11 +17,13 @@ cmd = "alacritty -e ranger"
 
 [[block]]
 block = "memory"
+[block.theme_overrides]
+idle_bg = "#226310"
+idle_fg = "#abcdef"
 
 [[block]]
 block = "cpu"
 interval = 1
-icons_format = "{icon}"
 format = " $icon $utilization "
 [block.theme_overrides]
 idle_bg = "#123456"
